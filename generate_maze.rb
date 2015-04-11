@@ -9,6 +9,10 @@ require 'active_support/core_ext/hash'
 require 'chunky_png'
 
 # 
+# Cell er en datastruktur der bruges til at ræpresentere celler
+#
+Cell = Struct.new(:visited, :connected_up, :connected_left)
+# 
 # Maze klassen bruges til at repræsentere en labyrint.
 #
 class Maze
@@ -194,23 +198,7 @@ class Maze
     end
   end
 end
-# 
-# Cell klassen bruges til at repræsentere celler.
-#
-class Cell
-  # Denne linje gør at visited, connected_up og connected_left kan læses og sættes ude fra
-  attr_accessor :visited, :connected_up, :connected_left
-  #
-  # Denne funktion er klassens constructor.
-  # Den gemmer at en ny oprettet celle ikke har været besøgt,
-  # og ikke skal være forbundet opad eller mod venstre.
-  #
-  def initialize
-    @visited = false
-    @connected_up = false
-    @connected_left = false
-  end
-end
+
 # Options er en tom liste der bruges til at gemme de parametre brugeren giver scriptet
 options = {}
 #
