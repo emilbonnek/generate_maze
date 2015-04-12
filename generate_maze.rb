@@ -21,7 +21,7 @@ class Maze
   #
   # Denne funktion er klassens constructor.
   # Den gemmer labyrintens bredde og højde,
-  # og et 2d-array med Cell objekter. Dernæst sætter den genereringen igang. 
+  # og et 2D-array med Cell objekter. Dernæst sætter den genereringen igang. 
   #
   def initialize(options = {})
     # Overskriv default indstillingerne med de indstillinger der blev givet til funktionen
@@ -199,12 +199,13 @@ class Maze
   end
 end
 
-# Options er en tom liste der bruges til at gemme de parametre brugeren giver scriptet
+# Options og errors bruges til at gemme indstillinger og fejl i parametre
 options = {}
+errors = {}
 #
 # Denne blok er bruges til at beskrive parametrene der gives til scriptet.
 # Her benyttes 'optparser' biblioteket, som blev hentet ind øverst i programmet.
-# Fordi der bruges optparser bliver der automatisk laven en pæn liste, der gemmes opts.
+# Fordi der bruges optparser bliver der automatisk laven en pæn liste, der gemmes i opts.
 #
 OptionParser.new do |opts|
   opts.banner =  "Usage:   generate_maze.rb [options]\n"
@@ -217,11 +218,15 @@ OptionParser.new do |opts|
   # Benytter derefter det samme regex til at definere bredden og højden.
   # Til sidst laver den et lille tjek for om de er i en ordentlig størrelse.
   #
-  opts.on("-s", "--size WIDTHxHEIGHT", /\d+x\d+/,"Specify maze_size") do |maze_size|
-    width, height = maze_size.match(/(\d+)x(\d+)/).captures.map &:to_i
-    raise "Size must be bigger"  if [width,height].min <=0
-    raise "Size must be smaller" if width * height >= 125**2
-    options[:maze_width], options[:maze_height]  = width, height
+  opts.on("-s", "--size WIDTHxHEIGHT", "Specify maze_size") do |maze_size|
+    if maze_size =~ /^\d+x\d+$/
+      width, height = maze_size.match(/^(\d+)x(\d+)$/).captures.map &:to_i
+      errors[:maze_size] = "must be bigger" if [width,height].min <=0
+      errors[:maze_size] = "must be smaller" if (width*height) >= 125**2
+      options[:maze_width], options[:maze_height]  = width, height
+    else
+      errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
+    end
   end
   #
   # Ansvarlig for -c parametret.
@@ -229,26 +234,34 @@ OptionParser.new do |opts|
   # Benytter derefter det samme regex til at definere rgb værdier.
   # Til sidst laver den et lille tjek for om farven findes. 
   #
-  opts.on("-c", "--color R,G,B", /\d+,\d+,\d+/,"Specify wall_color") do |wall_color|
-    r, g, b = wall_color.match(/(\d+),(\d+),(\d+)/).captures.map &:to_i
-    raise "Wall_color cannot have rgb values of more than 255" if [r,g,b].max > 255
-    options[:wall_color] = ChunkyPNG::Color::rgb(r,g,b)
+  opts.on("-c", "--color R,G,B", "Specify wall_color") do |color|
+    if color =~ /^\d+,\d+,\d+$/
+      r, g, b = color.match(/^(\d+),(\d+),(\d+)$/).captures.map &:to_i
+      errors[:wall_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
+      options[:wall_color] = ChunkyPNG::Color::rgb(r,g,b)
+    else
+      errors[:wall_color] = "must be in format R,G,B"
+    end
   end
   #
   # Ansvarlig for -b parametret.
   # Det helt samme som -c parametret ovenfor.
   #
-  opts.on("-b", "--background_color R,G,B", /\d+,\d+,\d+/,"Specify background_color") do |background_color|
-    r, g, b = background_color.match(/(\d+),(\d+),(\d+)/).captures.map &:to_i
-    raise "Background_color cannot have rgb values of more than 255" if [r,g,b].max > 255
-    options[:background_color] = ChunkyPNG::Color::rgb(r,g,b)
+  opts.on("-b", "--background_color R,G,B","Specify background_color") do |color|
+    if color =~ /^\d+,\d+,\d+$/
+      r, g, b = color.match(/^(\d+),(\d+),(\d+)$/).captures.map &:to_i
+      errors[:background_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
+      options[:background_color] = ChunkyPNG::Color::rgb(r,g,b)
+    else
+      errors[:background_color] = "must be in format R,G,B"
+    end
   end
   #
   # Ansvarlig for -p parametret.
   # Tjekker bare at filstien findes og sætter et / på enden hvis der mangler.
   #
   opts.on("-p", "--file_path FILE_PATH", "Specify file_path") do |file_path|
-    raise "'#{file_path}' could not be found" unless File.exists? File.expand_path(file_path)
+    errors[:file_path] = "#{file_path} could not be found" unless File.exists? File.expand_path(file_path)
     file_path << "/" unless file_path.end_with? "/"
     options[:file_path] = file_path
   end
@@ -289,6 +302,18 @@ OptionParser.new do |opts|
     exit
   end
 end.parse!
+
+# Hvis der er nogle fejl i parametrene bliver de udskrevet og programmet stopper
+if errors.any?
+  error_report = String.new
+  error_report << "------------ERRORS------------\n"
+  errors.each do |parameter, error_message|
+    error_report << "#{parameter} #{error_message}\n"
+  end
+  error_report <<"------------------------------\n"
+  puts error_report
+  exit
+end
 
 # Tag tiden.
 start = Time.now
