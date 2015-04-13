@@ -1,4 +1,4 @@
-# Generate_maze
+# Maze generation script
 
 This script lets you generate random rectangular mazes as .png files. The generated mazes will look something like this:
 
@@ -23,5 +23,6 @@ If you want to use a maze for something, you will probably need to make an entra
 *   Download this script and put somewhere on your computer
 *   Open the terminal and type `Ruby path/to/script/generate_maze.rb -h`
 
-##Usage
+##Getting started
 Running the script with `-h` will produce a help message. That should be everything you need to get started.
+
