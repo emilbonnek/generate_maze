@@ -1,6 +1,10 @@
 # Generate_maze
 
-This script lets you generate mazes as .png files.
+This script lets you generate mazes as .png files. The generated mazes will look something like this:
+![maze 1](https://github.com/emilbonnek/generate_maze/blob/master/mazes/1.png)
+![maze 2](https://github.com/emilbonnek/generate_maze/blob/master/mazes/2.png)
+![maze 3](https://github.com/emilbonnek/generate_maze/blob/master/mazes/3.png)
+![maze 4](https://github.com/emilbonnek/generate_maze/blob/master/mazes/4.png)
 
 ##Installation
 ###Mac
