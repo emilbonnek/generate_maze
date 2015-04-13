@@ -1,8 +1,11 @@
 # Generate_maze
 
-This script lets you generate random mazes as .png files. The generated mazes will look something like this:
+This script lets you generate random rectangular mazes as .png files. The generated mazes will look something like this:
 
 ![maze 1](https://github.com/emilbonnek/generate_maze/blob/master/mazes/1.png)
+![maze 2](https://github.com/emilbonnek/generate_maze/blob/master/mazes/2.png)
+
+If you want to use a maze for something, you will probably need to make an entrance and an exit.
 
 ##Installation
 ###Mac
@@ -21,3 +24,4 @@ This script lets you generate random mazes as .png files. The generated mazes wi
 *   Open the terminal and type "Ruby path/to/script/generate_maze.rb -h"
 
 ##Usage
+Running the script with -h will produce a help message. That should be everything you need to get started.
