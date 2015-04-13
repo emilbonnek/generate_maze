@@ -40,8 +40,3 @@ The following is all the possible parameters:
 | --open_file              | -o    | Open the exported maze when it is generated      |
 | --help                   | -h    | Get a help message                               |
 | --version                | -v    | Show version                                     |
-
-###Examples
-
-
-
