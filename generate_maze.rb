@@ -146,38 +146,41 @@ class Maze
   # De resterende metoder i klassen er private
   private
   #
-  # Denne funktion er ansvarlig for at påbegynde genereringen af labyrinten.
+  # Denne funktion er ansvarlig for at generere labyrinten.
   #
   def generate
     # Vælg et tilfældigt koordinat til at starte med.
     random_start = [rand(@width),rand(@height)]
-    make_graph_from(random_start)
-  end
-  #
-  # Denne rekursive funktion bruges til at gå fra celle til celle i labyrinten og forbinde dem.
-  #
-  def make_graph_from(coordinates)
-    # Gør det nemmere at at arbejde med koordinater inde i denne metode.
-    x,y = coordinates
-    # Marker denne celle som besøgt.
-    @grid[y][x].visited = true
-    # Gem alle cellens nabo-celler.
-    neighbors = Array.new
-    neighbors.push [x, y-1] unless y-1 < 0        # Nord
-    neighbors.push [x+1, y] unless x+1 >= @width  # Øst
-    neighbors.push [x, y+1] unless y+1 >= @height # Syd
-    neighbors.push [x-1, y] unless x-1 < 0        # Vest
-    # Fortsæt med dette loop indtil alle cellens naboer er markeret som besøgte
-    until neighbors.all? {|c| @grid[c[1]][c[0]].visited }
-      # Vælg en tilfældig af de naboer der ikke er besøgt
-      unvisited_neighbors = neighbors.select {|c| !@grid[c[1]][c[0]].visited }
-      neighbor = unvisited_neighbors.sample
-      # Fjern væggen mellem denne celle og den nabocelle
-      connect(coordinates, neighbor)
-      # Kør make_graph_from på den nabocelle
-      make_graph_from(neighbor)
+    
+    # Opret en stak og læg det tilfældige koordinat på stakken
+    stack = Array.new
+    stack.push random_start
+    until stack.empty?
+      # Tag koordinaterne fra det øverste element på stakken.
+      x,y = stack.last
+      # Marker cellen som besøgt.
+      @grid[y][x].visited = true
+      # Gem alle cellens nabo-celler.
+      neighbors = Array.new
+      neighbors.push [x, y-1] unless y-1 < 0        # Nord
+      neighbors.push [x+1, y] unless x+1 >= @width  # Øst
+      neighbors.push [x, y+1] unless y+1 >= @height # Syd
+      neighbors.push [x-1, y] unless x-1 < 0        # Vest
+      # Sorter de naboer fra der allerede er blevet besøgt af algoritmen
+      neighbors.delete_if {|x, y| @grid[y][x].visited }
+      # tjek om der er nogle ubesøgte naboer
+      if neighbors.any?
+        # Vælg en tilfældig ubesøgt nabo
+        random_neighbor = neighbors.sample
+        # Forbind denne celle med den tilfældige nabo
+        connect stack.last, random_neighbor
+        # Læg den tilfældige nabo øverst på stakken
+        stack.push random_neighbor
+      else
+        # Hvis der ingen naboer er, så tager den en celle af stakken
+        stack.pop
+      end
     end
-    # Når koden når hertil er vi i en af labyrintens blindgyder
   end
   #
   # Denne funktion er ansvarlig for at forbinde to celler sammen.
@@ -222,7 +225,7 @@ OptionParser.new do |opts|
     if maze_size =~ /^\d+x\d+$/
       width, height = maze_size.match(/^(\d+)x(\d+)$/).captures.map &:to_i
       errors[:maze_size] = "must be bigger" if [width,height].min <=0
-      errors[:maze_size] = "must be smaller" if (width*height) >= 125**2
+      # errors[:maze_size] = "must be smaller" if (width*height) >= 125**2
       options[:maze_width], options[:maze_height]  = width, height
     else
       errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
