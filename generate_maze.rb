@@ -9,7 +9,7 @@ require 'active_support/core_ext/hash'
 require 'chunky_png'
 
 # 
-# Cell er en datastruktur der bruges til at ræpresentere celler
+# Cell er en datastruktur der bruges til at ræpresentere celler.
 #
 Cell = Struct.new(:visited, :connected_up, :connected_left)
 # 
@@ -24,7 +24,7 @@ class Maze
   # og et 2D-array med Cell objekter. Dernæst sætter den genereringen igang. 
   #
   def initialize(options = {})
-    # Overskriv default indstillingerne med de indstillinger der blev givet til funktionen
+    # Overskriv default indstillingerne med de indstillinger der blev givet til funktionen.
     defaults = {maze_width: 10,
                 maze_height: 10}
     options.reverse_merge!(defaults)
@@ -42,7 +42,7 @@ class Maze
   end
   #
   # Denne funktion bruges til at vise labyrinten som ASCII.
-  # Koden er en smule spaghetti, men princippet er beskrevet i rapporten.
+  # Koden er en smule spaghetti, men princippet er beskrevet i rapporten under afsnit 6.2.
   #
   def to_s(options = {})
     defaults = {cell_width: 3,
@@ -152,7 +152,7 @@ class Maze
     # Vælg et tilfældigt koordinat til at starte med.
     random_start = [rand(@width),rand(@height)]
     
-    # Opret en stak og læg det tilfældige koordinat på stakken
+    # Opret en stak og læg det tilfældige koordinat på stakken.
     stack = Array.new
     stack.push random_start
     until stack.empty?
@@ -166,18 +166,18 @@ class Maze
       neighbors.push [x+1, y] unless x+1 >= @width  # Øst
       neighbors.push [x, y+1] unless y+1 >= @height # Syd
       neighbors.push [x-1, y] unless x-1 < 0        # Vest
-      # Sorter de naboer fra der allerede er blevet besøgt af algoritmen
+      # Sorter de naboer fra der allerede er blevet besøgt af algoritmen.
       neighbors.delete_if {|x, y| @grid[y][x].visited }
-      # tjek om der er nogle ubesøgte naboer
+      # tjek om der er nogle ubesøgte naboer.
       if neighbors.any?
-        # Vælg en tilfældig ubesøgt nabo
+        # Vælg en tilfældig ubesøgt nabo.
         random_neighbor = neighbors.sample
-        # Forbind denne celle med den tilfældige nabo
+        # Forbind denne celle med den tilfældige nabo.
         connect stack.last, random_neighbor
-        # Læg den tilfældige nabo øverst på stakken
+        # Læg den tilfældige nabo øverst på stakken.
         stack.push random_neighbor
       else
-        # Hvis der ingen naboer er, så tager den en celle af stakken
+        # Hvis der ingen naboer er, så tager den en celle af stakken.
         stack.pop
       end
     end
@@ -202,7 +202,7 @@ class Maze
   end
 end
 
-# Options og errors bruges til at gemme indstillinger og fejl i parametre
+# Options og errors bruges til at gemme indstillinger og fejl i parametre.
 options = {}
 errors = {}
 #
@@ -225,7 +225,6 @@ OptionParser.new do |opts|
     if maze_size =~ /^\d+x\d+$/
       width, height = maze_size.match(/^(\d+)x(\d+)$/).captures.map &:to_i
       errors[:maze_size] = "must be bigger" if [width,height].min <=0
-      # errors[:maze_size] = "must be smaller" if (width*height) >= 125**2
       options[:maze_width], options[:maze_height]  = width, height
     else
       errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
@@ -306,7 +305,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-# Hvis der er nogle fejl i parametrene bliver de udskrevet og programmet stopper
+# Hvis der er nogle fejl i parametrene bliver de udskrevet og programmet stopper.
 if errors.any?
   error_report = String.new
   error_report << "------------ERRORS------------\n"
