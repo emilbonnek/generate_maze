@@ -30,7 +30,7 @@ Please help me make this by contacting me on email, I do not own a Windows PC.
 *   Type in `Ruby desktop/generate_maze.rb -h` and press Enter to get started
 
 ##Getting started
-Running the script with `-h` will produce a help message. If you can get that help message to appear, you should be able to start appending other parameters. 
+Running the script with `-h` will produce a help message. If you can get that help message to appear, you should be able to start appending other parameters. Remember to remove the `-h`.
 
 ###Parameters
 The following is all the possible parameters:
