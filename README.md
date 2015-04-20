@@ -4,6 +4,7 @@ This script lets you generate random rectangular mazes as .png files. The genera
 
 ![maze 1](https://github.com/emilbonnek/generate_maze/blob/master/mazes/1.png)
 ![maze 2](https://github.com/emilbonnek/generate_maze/blob/master/mazes/2.png)
+![maze 3](https://github.com/emilbonnek/generate_maze/blob/master/mazes/3.png)
 
 If you want to use a generated maze for something, you will probably need to make an entrance and an exit for yourself.
 
