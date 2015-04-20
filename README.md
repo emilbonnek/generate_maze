@@ -29,14 +29,14 @@ Running the script with `-h` will produce a help message. If you can get that he
 ###Parameters
 The following is all the possible parameters:
 
-| Name                     | Short | Effect                                           |
-|--------------------------|-------|--------------------------------------------------|
-| --size WIDTHxHEIGHT      | -s    | Specify maze_size                                |
-| --color R,G,B            | -c    | Specify wall_color                               |
-| --background_color R,G,B | -b    | Specify background_color                         |
-| --file_path FILE_PATH    | -p    | Specify file_path                                |
-| --file_name FILE_NAME    | -n    | Specify file_name                                |
-| --ascii_preview          | -a    | Get an ASCII preview in the terminal (ANSI only) |
-| --open_file              | -o    | Open the exported maze when it is generated      |
-| --help                   | -h    | Get a help message                               |
-| --version                | -v    | Show version                                     |
+| Name                       | Short | Effect                                           |
+|----------------------------|-------|--------------------------------------------------|
+| --size WIDTHxHEIGHT        | -s    | Specify maze_size                                |
+| --color (R,G,B)            | -c    | Specify wall_color                               |
+| --background_color (R,G,B) | -b    | Specify background_color                         |
+| --file_path FILE_PATH      | -p    | Specify file_path                                |
+| --file_name FILE_NAME      | -n    | Specify file_name                                |
+| --ascii_preview            | -a    | Get an ASCII preview in the terminal (ANSI only) |
+| --open_file                | -o    | Open the exported maze when it is generated      |
+| --help                     | -h    | Get a help message                               |
+| --version                  | -v    | Show version                                     |
