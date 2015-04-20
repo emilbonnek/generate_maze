@@ -7,21 +7,26 @@ This script lets you generate random rectangular mazes as .png files. The genera
 
 If you want to use a maze for something, you will probably need to make an entrance and an exit for yourself.
 
+##Requirements
+*   Ruby version 1.9 or higher (OS X comes with that installed). 
+
 ##Installation
 ###Mac
-*   Open the terminal and type `Ruby -v`, you will need at least version 1.9
-*   Download this script and put somewhere on your computer
-*   Open the terminal and type `Ruby path/to/script/generate_maze.rb -h`
+*   Press the "Download ZIP" button on this site
+*   Unzip the folder onto your dektop
+*   Put the generate_maze.rb file on your desktop
+*   Press Command(⌘)+Space and type "Terminal" and press Enter
+*   Type in `Ruby desktop/generate_maze.rb -h` and press Enter to get started
 
 ###Windows
-*   Start out by [installing Ruby](http://rubyinstaller.org/), you will need at least version 1.9
-*   Download this script and put it somewhere on your computer
-*   Open the command prompt and type `Ruby path/to/script/generate_maze.rb -h`
+Please help me make this by contacting me on email, I do not own a Windows PC.
 
 ###Linux
-*   Start out by [installing Ruby](https://www.ruby-lang.org/en/documentation/installation/), you will need at least version 1.9
-*   Download this script and put somewhere on your computer
-*   Open the terminal and type `Ruby path/to/script/generate_maze.rb -h`
+*   Start out by [installing Ruby](https://www.ruby-lang.org/en/documentation/installation/), (see the requirements section above)
+*   Press the "Download ZIP" button on this site
+*   Put the generate_maze.rb file on your desktop
+*   Open up a terminal
+*   Type in `Ruby desktop/generate_maze.rb -h` and press Enter to get started
 
 ##Getting started
 Running the script with `-h` will produce a help message. If you can get that help message to appear, you should be able to start appending other parameters. 
