@@ -236,26 +236,26 @@ OptionParser.new do |opts|
   # Benytter derefter det samme regex til at definere rgb værdier.
   # Til sidst laver den et lille tjek for om farven findes. 
   #
-  opts.on("-c", "--color (R,G,B)", "Specify wall_color") do |color|
-    if color =~ /^\(\d+,\d+,\d+\)$/
-      r, g, b = color.match(/^\((\d+),(\d+),(\d+)\)$/).captures.map &:to_i
+  opts.on("-c", "--color R,G,B", "Specify wall_color") do |color|
+    if color =~ /^\d+,\d+,\d+$/
+      r, g, b = color.match(/^(\d+),(\d+),(\d+)$/).captures.map &:to_i
       errors[:wall_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
       options[:wall_color] = ChunkyPNG::Color::rgb(r,g,b)
     else
-      errors[:wall_color] = "must be in format (R,G,B)"
+      errors[:wall_color] = "must be in format R,G,B"
     end
   end
   #
   # Ansvarlig for -b parametret.
   # Det helt samme som -c parametret ovenfor.
   #
-  opts.on("-b", "--background_color (R,G,B)","Specify background_color") do |color|
-    if color =~ /^\(\d+,\d+,\d+\)$/
-      r, g, b = color.match(/^\((\d+),(\d+),(\d+)\)$/).captures.map &:to_i
+  opts.on("-b", "--background_color R,G,B","Specify background_color") do |color|
+    if color =~ /^\d+,\d+,\d+$/
+      r, g, b = color.match(/^(\d+),(\d+),(\d+)$/).captures.map &:to_i
       errors[:background_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
       options[:background_color] = ChunkyPNG::Color::rgb(r,g,b)
     else
-      errors[:background_color] = "must be in format (R,G,B)"
+      errors[:background_color] = "must be in format R,G,B"
     end
   end
   #
