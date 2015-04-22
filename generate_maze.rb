@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Versionsummer
-VERSION = "1.0"
+VERSION = "1.1"
 
 # Inkluder biblioteker
 require 'optparse'
@@ -231,7 +231,7 @@ OptionParser.new do |opts|
       errors[:maze_size] = "must be bigger" if [width,height].min <=0
       options[:maze_width], options[:maze_height]  = width, height
     else
-      errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
+      errors[:maze_size] = "must be in format INTxINT" unless maze_size =~ /^\d+x\d+$/
     end
   end
   #
@@ -239,10 +239,10 @@ OptionParser.new do |opts|
   # Benytter et regex til at sikre at formatet er korrekt.
   #
   opts.on("-g", "--seed SEED", "Specify seed for generation") do |seed|
-    if seed =~ /^\d{39}$/
+    if seed =~ /^\d+$/
       options[:seed] = seed.to_i
     else
-      errors[:seed] = "must be in format SEED{39 digits}"
+      errors[:seed] = "must be in format INT"
     end
   end
   #
@@ -257,7 +257,7 @@ OptionParser.new do |opts|
       errors[:wall_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
       options[:wall_color] = ChunkyPNG::Color::rgb(r,g,b)
     else
-      errors[:wall_color] = "must be in format R,G,B"
+      errors[:wall_color] = "must be in format INT,INT,INT"
     end
   end
   #
@@ -270,7 +270,7 @@ OptionParser.new do |opts|
       errors[:background_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
       options[:background_color] = ChunkyPNG::Color::rgb(r,g,b)
     else
-      errors[:background_color] = "must be in format R,G,B"
+      errors[:background_color] = "must be in format INT,INT,INT"
     end
   end
   #
