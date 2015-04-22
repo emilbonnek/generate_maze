@@ -17,7 +17,7 @@ Cell = Struct.new(:visited, :connected_up, :connected_left)
 #
 class Maze
   # Denne linje gør at width og heigth kan læses ude fra klassen.
-  attr_reader :width, :height
+  attr_reader :width, :height, :seed
   #
   # Denne funktion er klassens constructor.
   # Den gemmer labyrintens bredde og højde,
@@ -26,12 +26,16 @@ class Maze
   def initialize(options = {})
     # Overskriv default indstillingerne med de indstillinger der blev givet til funktionen.
     defaults = {maze_width: 10,
-                maze_height: 10}
+                maze_height: 10,
+                seed: Random.new_seed}
     options.reverse_merge!(defaults)
 
     @width, @height = options[:maze_width], options[:maze_height]
+    @seed = options[:seed]
+    @prng = Random.new(@seed)
     
     @grid = Array.new(@height) { Array.new(@width) { Cell.new } }
+
     generate
   end
   #
@@ -150,7 +154,7 @@ class Maze
   #
   def generate
     # Vælg et tilfældigt koordinat til at starte med.
-    random_start = [rand(@width),rand(@height)]
+    random_start = [@prng.rand(@width),@prng.rand(@height)]
     
     # Opret en stak og læg det tilfældige koordinat på stakken.
     stack = Array.new
@@ -171,7 +175,7 @@ class Maze
       # tjek om der er nogle ubesøgte naboer.
       if neighbors.any?
         # Vælg en tilfældig ubesøgt nabo.
-        random_neighbor = neighbors.sample
+        random_neighbor = neighbors.sample(random:@prng)
         # Forbind denne celle med den tilfældige nabo.
         connect stack.last, random_neighbor
         # Læg den tilfældige nabo øverst på stakken.
@@ -228,6 +232,17 @@ OptionParser.new do |opts|
       options[:maze_width], options[:maze_height]  = width, height
     else
       errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
+    end
+  end
+  #
+  # Ansvarlig for -g parametret.
+  # Benytter et regex til at sikre at formatet er korrekt.
+  #
+  opts.on("-g", "--seed SEED", "Specify seed for generation") do |seed|
+    if seed =~ /^\d{39}$/
+      options[:seed] = seed.to_i
+    else
+      errors[:seed] = "must be in format SEED{39 digits}"
     end
   end
   #
@@ -338,6 +353,7 @@ report = String.new
 report << "---------REPORT---------\n"
 report << "Time:  #{elapsed} seconds\n"
 report << "Saved: #{file}\n"
+report << "Seed: #{maze.seed}\n"
 report << "------------------------"
 puts report
 

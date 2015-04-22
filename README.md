@@ -38,6 +38,7 @@ The following is all the possible parameters:
 | Name                       | Short | Effect                                           |
 |----------------------------|-------|--------------------------------------------------|
 | --size WIDTHxHEIGHT        | -s    | Specify maze_size                                |
+| --seed SEED                | -g    | Specify seed for generation                      |
 | --color (R,G,B)            | -c    | Specify wall_color                               |
 | --background_color (R,G,B) | -b    | Specify background_color                         |
 | --file_path FILE_PATH      | -p    | Specify file_path                                |

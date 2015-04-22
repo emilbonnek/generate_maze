@@ -5,12 +5,15 @@ require 'active_support/core_ext/hash'
 require 'chunky_png'
 Cell = Struct.new(:visited, :connected_up, :connected_left)
 class Maze
-  attr_reader :width, :height
+  attr_reader :width, :height, :seed
   def initialize(options = {})
     defaults = {maze_width: 10,
-                maze_height: 10}
+                maze_height: 10,
+                seed: Random.new_seed}
     options.reverse_merge!(defaults)
     @width, @height = options[:maze_width], options[:maze_height]
+    @seed = options[:seed]
+    @prng = Random.new(@seed)
     @grid = Array.new(@height) { Array.new(@width) { Cell.new } }
     generate
   end
@@ -105,7 +108,7 @@ class Maze
   end
   private
   def generate
-    random_start = [rand(@width),rand(@height)]
+    random_start = [@prng.rand(@width),@prng.rand(@height)]
     stack = Array.new
     stack.push random_start
     until stack.empty?
@@ -118,7 +121,7 @@ class Maze
       neighbors.push [x-1, y] unless x-1 < 0
       neighbors.delete_if {|x, y| @grid[y][x].visited }
       if neighbors.any?
-        random_neighbor = neighbors.sample
+        random_neighbor = neighbors.sample(random:@prng)
         connect stack.last, random_neighbor
         stack.push random_neighbor
       else
@@ -154,6 +157,15 @@ OptionParser.new do |opts|
       options[:maze_width], options[:maze_height]  = width, height
     else
       errors[:maze_size] = "must be in format WIDTHxHEIGHT" unless maze_size =~ /^\d+x\d+$/
+    end
+  end
+  opts.on("-b", "--background_color R,G,B","Specify background_color") do |color|
+    if color =~ /^\d+,\d+,\d+$/
+      r, g, b = color.match(/^(\d+),(\d+),(\d+)$/).captures.map &:to_i
+      errors[:background_color] = "cannot have RGB values of more than 255" if [r,g,b].max > 255
+      options[:background_color] = ChunkyPNG::Color::rgb(r,g,b)
+    else
+      errors[:background_color] = "must be in format R,G,B"
     end
   end
   opts.on("-c", "--color R,G,B", "Specify wall_color") do |color|
