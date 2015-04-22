@@ -228,8 +228,10 @@ finish = Time.now
 elapsed = finish - start
 report = String.new
 report << "---------REPORT---------\n"
+report << "Size:  #{maze.width}x#{maze.height}\n"
 report << "Time:  #{elapsed} seconds\n"
 report << "Saved: #{file}\n"
+report << "Seed:  #{maze.seed}\n"
 report << "------------------------"
 puts report
 system "open #{file}" if options[:open_file]

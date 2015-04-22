@@ -351,9 +351,10 @@ elapsed = finish - start
 # Udskriv en lille rapport over hvad der blev genereret.
 report = String.new
 report << "---------REPORT---------\n"
+report << "Size:  #{maze.width}x#{maze.height}\n"
 report << "Time:  #{elapsed} seconds\n"
 report << "Saved: #{file}\n"
-report << "Seed: #{maze.seed}\n"
+report << "Seed:  #{maze.seed}\n"
 report << "------------------------"
 puts report
 
