@@ -1,5 +1,4 @@
-# Maze generation script
-
+# Generate Maze
 This script lets you generate random rectangular mazes as .png files. The generated mazes will look something like this:
 
 ![maze 1](https://github.com/emilbonnek/generate_maze/blob/master/mazes/1.png)
